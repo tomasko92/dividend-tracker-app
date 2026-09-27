@@ -62,11 +62,29 @@ const DEFAULT_HOLDINGS=[
 {name:"SCHD",shares:0,annual:0,monthly:380,active:true},
 {name:"MO",shares:0,annual:0,monthly:0,active:false}
 ];
-let holdings=JSON.parse(localStorage.getItem("dt_holdings")||"null")||DEFAULT_HOLDINGS;
-let tx=JSON.parse(localStorage.getItem("dt_tx")||"[]");
-let cash=Number(localStorage.getItem("dt_cash")||50);
-let target=Number(localStorage.getItem("dt_target")||200);
-let tab=localStorage.getItem("dt_tab")||"dashboard";
+function safeGet(key,fallback){
+ try{
+  const raw=window.localStorage.getItem(key);
+  return raw===null?fallback:raw;
+ }catch(e){return fallback}
+}
+function safeJSON(key,fallback){
+ try{
+  const raw=safeGet(key,null);
+  if(raw===null)return fallback;
+  const value=JSON.parse(raw);
+  return value==null?fallback:value;
+ }catch(e){
+  try{window.localStorage.removeItem(key)}catch(_){}
+  return fallback;
+}
+let holdings=safeJSON("dt_holdings",null)||DEFAULT_HOLDINGS;
+if(!Array.isArray(holdings)||!holdings.length)holdings=DEFAULT_HOLDINGS;
+let tx=safeJSON("dt_tx",[]);
+if(!Array.isArray(tx))tx=[];
+let cash=Number(safeGet("dt_cash",50));
+let target=Number(safeGet("dt_target",200));
+let tab=safeGet("dt_tab","dashboard");
 let salary=holdings.reduce((a,h)=>a+Number(h.monthly||0),0);
 
 function money(n){return "€"+Number(n||0).toLocaleString("en-IE",{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -75,7 +93,15 @@ function monthlyContrib(){return holdings.reduce((a,h)=>a+Number(h.monthly||0),0
 function jeqp(){return holdings.find(h=>h.name.toUpperCase()==="JEQP")||{annual:0}}
 function stressAnnual(){return annual()-Number(jeqp().annual||0)*.20}
 function stressMonthly(){return stressAnnual()/12+cash}
-function save(){localStorage.setItem("dt_holdings",JSON.stringify(holdings));localStorage.setItem("dt_tx",JSON.stringify(tx));localStorage.setItem("dt_cash",cash);localStorage.setItem("dt_target",target);localStorage.setItem("dt_tab",tab)}
+function save(){
+ try{
+  localStorage.setItem("dt_holdings",JSON.stringify(holdings));
+  localStorage.setItem("dt_tx",JSON.stringify(tx));
+  localStorage.setItem("dt_cash",cash);
+  localStorage.setItem("dt_target",target);
+  localStorage.setItem("dt_tab",tab);
+ }catch(e){}
+}
 function setTab(x){tab=x;save();render()}
 function nav(){const a=["dashboard","holdings","activity","income","goals","settings"],icons=["⌂","◉","☷","◷","◎","⚙"];document.getElementById("nav").innerHTML=a.map((x,i)=>'<button class="'+(tab===x?"active":"")+'" onclick="setTab(\''+x+'\')">'+icons[i]+'<small>'+x[0].toUpperCase()+x.slice(1)+'</small></button>').join("")}
 
