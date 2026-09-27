@@ -77,6 +77,7 @@ function safeJSON(key,fallback){
  }catch(e){
   try{window.localStorage.removeItem(key)}catch(_){}
   return fallback;
+ }
 }
 let holdings=safeJSON("dt_holdings",null)||DEFAULT_HOLDINGS;
 if(!Array.isArray(holdings)||!holdings.length)holdings=DEFAULT_HOLDINGS;
