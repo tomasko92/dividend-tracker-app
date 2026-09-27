@@ -1,35 +1,148 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Dividend Tracker"><link rel="manifest" href="manifest.json"><title>Dividend Tracker</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f5f5f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dividend Tracker">
+<link rel="manifest" href="manifest.json">
+<title>Dividend Tracker</title>
 <style>
-:root{--bg:#f5f5f7;--card:#fff;--text:#111;--muted:#6b7280;--line:#e5e7eb;--good:#16803c}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;padding-bottom:80px}header{padding:20px 16px 12px;position:sticky;top:0;background:#f5f5f7ee;backdrop-filter:blur(18px);z-index:2;border-bottom:1px solid var(--line)}h1{margin:0;font-size:28px}.sub{color:var(--muted);font-size:14px;margin-top:3px}.wrap{max-width:900px;margin:auto;padding:16px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.label{font-size:13px;color:var(--muted)}.big{font-size:28px;font-weight:700;margin-top:5px}.small{font-size:13px;color:var(--muted);margin-top:4px}.section{font-size:19px;font-weight:700;margin:22px 0 10px}.row{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.bar{height:9px;background:#e8e8eb;border-radius:9px;overflow:hidden;margin:10px 0}.bar span{display:block;height:100%;background:#111}.actions{display:flex;gap:8px;flex-wrap:wrap}button{font:inherit}button.primary{background:#111;color:#fff;border:0;border-radius:12px;padding:11px 15px;font-weight:600}button.secondary{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 5px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}nav{position:fixed;bottom:0;left:0;right:0;background:#fffef5;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:3}nav button{flex:1;max-width:150px;border:0;background:transparent;color:#777;padding:10px 3px}nav button.active{color:#111;font-weight:700}nav small{display:block;margin-top:3px}dialog{border:0;border-radius:20px;width:min(94vw,520px);padding:0}dialog::backdrop{background:#0007}.modal{padding:20px}label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;font-size:16px;background:#fff}.empty{text-align:center;color:var(--muted);padding:24px}
+:root{--bg:#f5f5f7;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--soft:#f0f1f3;--good:#167a3f;--warn:#9a6700}
+*{box-sizing:border-box}html{font-size:16px}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",sans-serif;padding-bottom:92px;-webkit-font-smoothing:antialiased}
+header{padding:calc(env(safe-area-inset-top) + 18px) 18px 12px;position:sticky;top:0;background:#f5f5f7ee;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:5;border-bottom:1px solid var(--line)}
+header .wrap{padding:0}.wrap{max-width:920px;margin:auto;padding:16px 18px}h1{margin:0;font-size:28px;letter-spacing:-.5px}.sub{color:var(--muted);font-size:14px;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 1px 2px #00000008}.label{font-size:13px;color:var(--muted)}.big{font-size:28px;font-weight:750;margin-top:6px;letter-spacing:-.6px}.small{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.35}.section{font-size:20px;font-weight:750;margin:24px 0 10px;letter-spacing:-.2px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.row .right{text-align:right}.muted{color:var(--muted)}.pill{display:inline-block;font-size:12px;padding:5px 8px;border-radius:999px;background:var(--soft);color:#555;margin-top:4px}
+.bar{height:10px;background:#e8e8eb;border-radius:10px;overflow:hidden;margin:12px 0}.bar span{display:block;height:100%;background:#111;border-radius:10px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;-webkit-tap-highlight-color:transparent}button.primary{background:#111;color:#fff;border:0;border-radius:13px;padding:12px 15px;font-weight:650}button.secondary{background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 14px;color:#222}button.danger{color:#a33;background:#fff;border:1px solid #ead4d4;border-radius:13px;padding:11px 14px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 5px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}
+nav{position:fixed;bottom:0;left:0;right:0;padding:6px 5px calc(6px + env(safe-area-inset-bottom));background:#fffef8;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:10;box-shadow:0 -4px 16px #00000008}nav button{flex:1;max-width:150px;border:0;background:transparent;color:#777;padding:8px 2px 4px}nav button.active{color:#111;font-weight:700}nav small{display:block;margin-top:4px;font-size:11px}
+dialog{border:0;border-radius:22px;width:min(94vw,540px);max-height:90vh;padding:0;box-shadow:0 20px 60px #0005}dialog::backdrop{background:#0007}.modal{padding:20px;max-height:90vh;overflow:auto}.modal h2{margin:0 0 4px}label{display:block;font-size:13px;color:var(--muted);margin:13px 0 6px}input,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff;color:#111}input:focus,select:focus{outline:2px solid #d9dce1;outline-offset:1px}.empty{text-align:center;color:var(--muted);padding:28px 12px}.notice{padding:13px 14px;border:1px solid #dfe4ec;background:#fafbfc;border-radius:14px;font-size:13px;line-height:1.45;color:#596273}.kpi{font-weight:700}.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fafafa;border-radius:14px;padding:12px}.stat .v{font-weight:700;margin-top:3px}
 @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
-</style></head><body>
+@media(display-mode:standalone){html{font-size:17px}header{padding-top:calc(env(safe-area-inset-top) + 20px)}.wrap{padding-left:18px;padding-right:18px}.card{border-radius:20px}.big{font-size:30px}nav small{font-size:12px}}
+</style>
+</head>
+<body>
 <header><div class="wrap"><h1>Dividend Tracker</h1><div class="sub">Personal income & contribution dashboard</div></div></header>
-<main class="wrap"><div id="content"></div></main><nav id="nav"></nav>
-<dialog id="dlg"><div class="modal"><h2>Add transaction</h2><form id="form"><label>Date</label><input id="date" type="date" required><label>Type</label><select id="type"><option value="contribution">Contribution / buy</option><option value="dividend">Dividend received</option><option value="cash">Cash interest</option></select><label>Holding</label><select id="holding"></select><label>Amount (€)</label><input id="amount" type="number" min="0" step=".01" required><label>Shares (optional)</label><input id="shares" type="number" min="0" step=".0001"><label>Note</label><input id="note"><div class="actions" style="margin-top:18px"><button class="primary">Save</button><button type="button" class="secondary" onclick="dlg.close()">Cancel</button></div></form></div></dialog>
+<main class="wrap"><div id="content"></div></main>
+<nav id="nav"></nav>
+
+<dialog id="txDlg"><div class="modal"><h2>Add transaction</h2><div class="small">Transactions are stored only on this device.</div>
+<form id="txForm">
+<label>Date</label><input id="txDate" type="date" required>
+<label>Type</label><select id="txType"><option value="contribution">Contribution / buy</option><option value="dividend">Dividend received</option><option value="cash">Cash interest</option><option value="sale">Sale</option></select>
+<label>Holding</label><select id="txHolding"></select>
+<label>Amount (€)</label><input id="txAmount" type="number" min="0" step=".01" required>
+<label>Shares (optional)</label><input id="txShares" type="number" min="0" step=".0001">
+<label>Note</label><input id="txNote" maxlength="160">
+<div class="actions" style="margin-top:18px"><button class="primary">Save</button><button type="button" class="secondary" onclick="txDlg.close()">Cancel</button></div>
+</form></div></dialog>
+
+<dialog id="holdDlg"><div class="modal"><h2 id="holdTitle">Edit holding</h2>
+<form id="holdForm"><input id="holdIndex" type="hidden">
+<label>Ticker</label><input id="holdName" maxlength="12" required>
+<label>Shares currently held</label><input id="holdShares" type="number" min="0" step=".0001" required>
+<label>Projected annual distribution / income (€)</label><input id="holdAnnual" type="number" min="0" step=".01" required>
+<label>New monthly contribution (€)</label><input id="holdMonthly" type="number" min="0" step=".01" required>
+<label>Contribution status</label><select id="holdActive"><option value="true">Active — keep contributing</option><option value="false">Held only — no new contributions</option></select>
+<div class="actions" style="margin-top:18px"><button class="primary">Save holding</button><button type="button" class="secondary" onclick="holdDlg.close()">Cancel</button></div>
+</form></div></dialog>
+
 <script>
-var seed=[{name:"JEQP",shares:0,annual:0,active:true},{name:"VGWD",shares:0,annual:0,active:true},{name:"VGWL",shares:0,annual:0,active:true},{name:"VEUR",shares:0,annual:0,active:true},{name:"VHYL",shares:0,annual:0,active:false},{name:"JGPI",shares:0,annual:0,active:true},{name:"SCHD",shares:0,annual:0,active:true},{name:"MO",shares:0,annual:0,active:false}];
-var holdings=JSON.parse(localStorage.getItem("dt_holdings")||"null")||seed;
-var tx=JSON.parse(localStorage.getItem("dt_tx")||"[]");
-var cash=Number(localStorage.getItem("dt_cash")||0);
-var salary=Number(localStorage.getItem("dt_salary")||0);
-var target=Number(localStorage.getItem("dt_target")||200);
-var tab=localStorage.getItem("dt_tab")||"dashboard";
+const DEFAULT_HOLDINGS=[
+{name:"JEQP",shares:0,annual:0,monthly:0,active:true},
+{name:"VGWD",shares:0,annual:0,monthly:200,active:true},
+{name:"VGWL",shares:0,annual:0,monthly:400,active:true},
+{name:"VEUR",shares:0,annual:0,monthly:400,active:true},
+{name:"VHYL",shares:0,annual:0,monthly:0,active:false},
+{name:"JGPI",shares:0,annual:0,monthly:120,active:true},
+{name:"SCHD",shares:0,annual:0,monthly:380,active:true},
+{name:"MO",shares:0,annual:0,monthly:0,active:false}
+];
+let holdings=JSON.parse(localStorage.getItem("dt_holdings")||"null")||DEFAULT_HOLDINGS;
+let tx=JSON.parse(localStorage.getItem("dt_tx")||"[]");
+let cash=Number(localStorage.getItem("dt_cash")||50);
+let target=Number(localStorage.getItem("dt_target")||200);
+let tab=localStorage.getItem("dt_tab")||"dashboard";
+let salary=holdings.reduce((a,h)=>a+Number(h.monthly||0),0);
+
 function money(n){return "€"+Number(n||0).toLocaleString("en-IE",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function annual(){return holdings.reduce(function(a,h){return a+Number(h.annual||0)},0)}
-function save(){localStorage.setItem("dt_holdings",JSON.stringify(holdings));localStorage.setItem("dt_tx",JSON.stringify(tx));localStorage.setItem("dt_cash",cash);localStorage.setItem("dt_salary",salary);localStorage.setItem("dt_target",target);localStorage.setItem("dt_tab",tab)}
+function annual(){return holdings.reduce((a,h)=>a+Number(h.annual||0),0)}
+function monthlyContrib(){return holdings.reduce((a,h)=>a+Number(h.monthly||0),0)}
+function jeqp(){return holdings.find(h=>h.name.toUpperCase()==="JEQP")||{annual:0}}
+function stressAnnual(){return annual()-Number(jeqp().annual||0)*.20}
+function stressMonthly(){return stressAnnual()/12+cash}
+function save(){localStorage.setItem("dt_holdings",JSON.stringify(holdings));localStorage.setItem("dt_tx",JSON.stringify(tx));localStorage.setItem("dt_cash",cash);localStorage.setItem("dt_target",target);localStorage.setItem("dt_tab",tab)}
 function setTab(x){tab=x;save();render()}
-function nav(){var a=["dashboard","holdings","activity","income","goals","settings"],icons=["⌂","◉","☷","◷","◎","⚙"],html="";for(var i=0;i<a.length;i++){html+='<button class="'+(tab===a[i]?"active":"")+'" onclick="setTab(\''+a[i]+'\')">'+icons[i]+'<small>'+a[i][0].toUpperCase()+a[i].slice(1)+'</small></button>'}document.getElementById("nav").innerHTML=html}
-function dashboard(){var a=annual(),j=holdings.find(function(h){return h.name==="JEQP"}),stress=a-(j?j.annual*.2:0),m=stress/12+cash,p=Math.min(100,m/target*100);return '<div class="grid"><div class="card"><div class="label">Monthly passive income</div><div class="big">'+money(m)+'</div><div class="small">20% JEQP distribution stress</div></div><div class="card"><div class="label">Annualized</div><div class="big">'+money(m*12)+'</div><div class="small">Current run-rate</div></div><div class="card"><div class="label">ETF income / month</div><div class="big">'+money(stress/12)+'</div><div class="small">Stress-adjusted</div></div><div class="card"><div class="label">Cash interest</div><div class="big">'+money(cash)+'</div><div class="small">Manual assumption</div></div></div><div class="section">2027 income target</div><div class="card"><div><b>'+money(m)+'</b> of <b>'+money(target)+'</b> / month</div><div class="bar"><span style="width:'+p+'%"></span></div><div class="small">Gap: '+money(Math.max(0,target-m))+'/month</div></div><div class="section">Strategy</div><div class="card"><div class="row"><span>Salary contributions</span><b>'+money(salary)+'/month</b></div><div class="row"><span>Dividends</span><b>100% reinvested → JEQP</b></div><div class="row"><span>Cash income</span><b>'+money(cash)+'/month</b></div></div><div class="section">Annual income by holding</div><div class="card">'+holdings.map(function(h){return '<div class="row"><b>'+h.name+'</b><span>'+money(h.annual)+'</span></div>'}).join("")+'</div><button class="primary" style="margin-top:14px" onclick="openDlg()">+ Add transaction</button>'}
-function holdingsView(){return '<div class="actions"><button class="primary" onclick="openDlg()">+ Transaction</button></div><div class="section">Holdings</div><div class="card">'+holdings.map(function(h){return '<div class="row"><div><b>'+h.name+'</b><div class="small">'+h.shares+' shares · '+(h.active?"active contributions":"held only")+'</div></div><div><b>'+money(h.annual)+'</b><div class="small">'+money(h.annual/12)+'/mo</div></div></div>'}).join("")+'</div>'}
-function activity(){var rows=tx.slice().reverse().map(function(t){return '<tr><td>'+t.date+'</td><td>'+t.type+'</td><td>'+t.holding+'</td><td>'+money(t.amount)+'</td></tr>'}).join("");return '<div class="actions"><button class="primary" onclick="openDlg()">+ Add transaction</button><button class="secondary" onclick="exportData()">Export JSON</button></div><div class="section">Activity</div><div class="card">'+(rows?'<table><tr><th>Date</th><th>Type</th><th>Holding</th><th>Amount</th></tr>'+rows+'</table>':'<div class="empty">No transactions yet.</div>')+'</div>'}
-function income(){var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],s=Array(12).fill(0);tx.forEach(function(t){if(t.type==="dividend"||t.type==="cash"){s[new Date(t.date).getMonth()]+=Number(t.amount)}});return '<div class="section">Income received</div><div class="grid"><div class="card"><div class="label">Tracked income</div><div class="big">'+money(s.reduce(function(a,b){return a+b},0))+'</div></div><div class="card"><div class="label">Projected monthly</div><div class="big">'+money(annual()/12+cash)+'</div></div></div><div class="section">Monthly history</div><div class="card">'+ms.map(function(m,i){return '<div class="row"><span>'+m+'</span><b>'+money(s[i])+'</b></div>'}).join("")+'</div>'}
-function goals(){var current=annual()/12+cash;return '<div class="section">Income goal</div><div class="card"><div class="label">Monthly target</div><div class="big">'+money(target)+'</div><label>Change target</label><input type="number" value="'+target+'" step="10" onchange="target=Number(this.value);save();render()"><div class="section">Current run-rate</div><div class="big">'+money(current)+'</div><div class="small">Includes your configured monthly cash income.</div><div class="section">JEQP 20% stress test</div><div class="small">A 20% reduction in the current JEQP annual distribution removes '+money((holdings.find(function(h){return h.name==="JEQP"})||{annual:0}).annual*.2)+'/year, or '+money((holdings.find(function(h){return h.name==="JEQP"})||{annual:0}).annual*.2/12)+'/month, assuming the share count stays unchanged.</div></div>'}
-function settings(){return '<div class="section">Settings</div><div class="card"><label>Monthly salary contribution</label><input type="number" value="'+salary+'" onchange="salary=Number(this.value);save()"><label>Monthly cash interest</label><input type="number" value="'+cash+'" onchange="cash=Number(this.value);save()"><div class="actions" style="margin-top:18px"><button class="secondary" onclick="exportData()">Export JSON</button><button class="secondary" onclick="resetData()">Reset local data</button></div><p class="small">Transactions and settings are stored locally on this device/browser. GitHub stores the application code, not your private transaction data.</p></div>'}
-function render(){nav();var f={dashboard:dashboard,holdings:holdingsView,activity:activity,income:income,goals:goals,settings:settings};document.getElementById("content").innerHTML=f[tab]()}
-function openDlg(){document.getElementById("date").value=new Date().toISOString().slice(0,10);document.getElementById("holding").innerHTML=holdings.map(function(h){return "<option>"+h.name+"</option>"}).join("");document.getElementById("dlg").showModal()}
-document.getElementById("form").addEventListener("submit",function(e){e.preventDefault();var t={date:date.value,type:type.value,holding:holding.value,amount:Number(amount.value),shares:Number(shares.value||0),note:note.value};tx.push(t);if(t.type==="contribution"){var h=holdings.find(function(x){return x.name===t.holding});if(h&&t.shares)h.shares+=t.shares}save();dlg.close();render()});
-function exportData(){var b=new Blob([JSON.stringify({holdings:holdings,tx:tx,cash:cash,salary:salary,target:target},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="dividend-tracker-backup.json";a.click()}
-function resetData(){if(confirm("Reset all local tracker data?")){localStorage.clear();location.reload()}}
-render();if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js").catch(function(){});
-</script></body></html>
+function nav(){const a=["dashboard","holdings","activity","income","goals","settings"],icons=["⌂","◉","☷","◷","◎","⚙"];document.getElementById("nav").innerHTML=a.map((x,i)=>'<button class="'+(tab===x?"active":"")+'" onclick="setTab(\''+x+'\')">'+icons[i]+'<small>'+x[0].toUpperCase()+x.slice(1)+'</small></button>').join("")}
+
+function dashboard(){
+ const a=annual(),sm=stressMonthly(),p=Math.min(100,sm/target*100),je=Number(jeqp().annual||0),reduction=je*.2/12;
+ return '<div class="grid"><div class="card"><div class="label">Monthly passive income</div><div class="big">'+money(sm)+'</div><div class="small">After 20% JEQP distribution stress</div></div>'+
+ '<div class="card"><div class="label">Annualized</div><div class="big">'+money(sm*12)+'</div><div class="small">Stress-adjusted run-rate</div></div>'+
+ '<div class="card"><div class="label">ETF income / month</div><div class="big">'+money(stressAnnual()/12)+'</div><div class="small">Excluding cash interest</div></div>'+
+ '<div class="card"><div class="label">Cash interest</div><div class="big">'+money(cash)+'</div><div class="small">Monthly assumption</div></div></div>'+
+ '<div class="section">Income target</div><div class="card"><div><b>'+money(sm)+'</b> of <b>'+money(target)+'</b> / month</div><div class="bar"><span style="width:'+p+'%"></span></div><div class="small">Gap: '+money(Math.max(0,target-sm))+'/month</div></div>'+
+ '<div class="section">Strategy</div><div class="card"><div class="row"><span>Salary contributions</span><b>'+money(monthlyContrib())+'/month</b></div><div class="row"><span>Dividends</span><b>100% reinvested → JEQP</b></div><div class="row"><span>Cash income</span><b>'+money(cash)+'/month</b></div></div>'+
+ '<div class="section">JEQP stress</div><div class="card"><div class="row"><span>Current JEQP annual income</span><b>'+money(je)+'</b></div><div class="row"><span>20% reduction</span><b>-'+money(je*.2)+'/year</b></div><div class="row"><span>Monthly impact</span><b>-'+money(reduction)+'</b></div></div>'+
+ '<div class="section">Annual income by holding</div><div class="card">'+holdings.map(h=>'<div class="row"><b>'+h.name+'</b><span>'+money(h.annual)+'</span></div>').join("")+'</div>'+
+ '<button class="primary" style="margin-top:14px" onclick="openTx()">+ Add transaction</button>';
+}
+
+function holdingsView(){
+ return '<div class="notice">Enter your current shares and annual projected distributions here. These figures are stored locally on your iPhone; they are not written to GitHub.</div>'+
+ '<div class="actions" style="margin-top:12px"><button class="primary" onclick="openHold(-1)">+ Add holding</button><button class="secondary" onclick="openTx()">+ Transaction</button></div>'+
+ '<div class="section">Holdings</div><div class="card">'+holdings.map((h,i)=>'<div class="row"><div><b>'+h.name+'</b><div class="small">'+Number(h.shares||0).toLocaleString("en-IE",{maximumFractionDigits:4})+' shares</div><span class="pill">'+(h.active?'€'+Number(h.monthly||0).toLocaleString("en-IE")+'/mo contribution':'Held only')+'</span></div><div class="right"><b>'+money(h.annual)+'</b><div class="small">'+money(h.annual/12)+'/mo</div><button class="secondary" style="margin-top:7px;padding:7px 10px" onclick="openHold('+i+')">Edit</button></div></div>').join("")+'</div>';
+}
+
+function activity(){
+ const rows=tx.slice().reverse().map((t,i)=>'<tr><td>'+t.date+'</td><td>'+t.type+'</td><td>'+t.holding+'</td><td>'+money(t.amount)+'</td></tr>').join("");
+ return '<div class="notice">Every transaction you add is kept locally on this device. Use Export JSON regularly for backup.</div><div class="actions" style="margin-top:12px"><button class="primary" onclick="openTx()">+ Add transaction</button><button class="secondary" onclick="exportData()">Export backup</button></div><div class="section">Activity</div><div class="card">'+(rows?'<table><tr><th>Date</th><th>Type</th><th>Holding</th><th>Amount</th></tr>'+rows+'</table>':'<div class="empty">No transactions yet.</div>')+'</div>';
+}
+
+function income(){
+ const ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],s=Array(12).fill(0);
+ tx.forEach(t=>{if(t.type==="dividend"||t.type==="cash"){const d=new Date(t.date);if(!isNaN(d))s[d.getMonth()]+=Number(t.amount||0)}});
+ const received=s.reduce((a,b)=>a+b,0);
+ return '<div class="grid"><div class="card"><div class="label">Tracked income YTD</div><div class="big">'+money(received)+'</div><div class="small">Actual transactions entered</div></div><div class="card"><div class="label">Projected monthly</div><div class="big">'+money(annual()/12+cash)+'</div><div class="small">Before JEQP stress</div></div></div>'+
+ '<div class="section">Monthly history</div><div class="card">'+ms.map((m,i)=>'<div class="row"><span>'+m+'</span><b>'+money(s[i])+'</b></div>').join("")+'</div>';
+}
+
+function goals(){
+ const base=annual()/12+cash,stress=stressMonthly(),threshold=Math.max(0,(200*12-cash*12-annual()+jeqp().annual*.2));
+ return '<div class="section">Monthly target</div><div class="card"><div class="label">Target</div><div class="big">'+money(target)+'</div><label>Change target</label><input type="number" value="'+target+'" step="10" onchange="target=Number(this.value);save();render()"><div class="section">Current run-rate</div><div class="big">'+money(base)+'</div><div class="small">Before JEQP stress</div><div class="section">20% JEQP stress</div><div class="big">'+money(stress)+'</div><div class="small">This is the monthly income after reducing JEQP annual distribution by 20%.</div><div class="section">€200 floor check</div><div class="small">'+(stress>=200?'Your current stress-adjusted run-rate is above €200/month.':'Your current stress-adjusted run-rate is below €200/month.')+'</div></div>';
+}
+
+function settings(){
+ return '<div class="section">Settings</div><div class="card"><label>Monthly cash interest</label><input type="number" value="'+cash+'" step=".01" onchange="cash=Number(this.value);save();render()"><div class="section">Monthly contributions</div><div class="small">Contributions are managed per holding in Holdings. Current configured total: <b>'+money(monthlyContrib())+'/month</b>.</div><div class="actions" style="margin-top:18px"><button class="secondary" onclick="exportData()">Export JSON backup</button><button class="secondary" onclick="document.getElementById('importFile').click()">Import backup</button><input id="importFile" type="file" accept=".json,application/json" style="display:none" onchange="importData(this)"><button class="danger" onclick="resetData()">Reset local data</button></div><div class="notice" style="margin-top:16px">Privacy model: GitHub hosts only the application code. Your holdings, transactions and settings stay in this browser's local storage unless you export them yourself.</div></div>';
+}
+
+function render(){nav();const f={dashboard,holdings:holdingsView,activity,income,goals,settings};document.getElementById("content").innerHTML=f[tab]()}
+function openTx(){txDate.value=new Date().toISOString().slice(0,10);txHolding.innerHTML=holdings.map(h=>'<option>'+h.name+'</option>').join("");txDlg.showModal()}
+function openHold(i){
+ holdIndex.value=i;holdTitle.textContent=i<0?"Add holding":"Edit holding";
+ const h=i<0?{name:"",shares:0,annual:0,monthly:0,active:true}:holdings[i];
+ holdName.value=h.name;holdShares.value=h.shares;holdAnnual.value=h.annual;holdMonthly.value=h.monthly||0;holdActive.value=String(h.active!==false);holdDlg.showModal();
+}
+txForm.addEventListener("submit",e=>{
+ e.preventDefault();
+ const t={date:txDate.value,type:txType.value,holding:txHolding.value,amount:Number(txAmount.value),shares:Number(txShares.value||0),note:txNote.value||""};
+ tx.push(t);
+ const h=holdings.find(x=>x.name===t.holding);
+ if(h&&t.shares){if(t.type==="contribution")h.shares+=t.shares;if(t.type==="sale")h.shares=Math.max(0,h.shares-t.shares)}
+ if(t.type==="cash"){cash=tx.filter(x=>x.type==="cash"&&x.date.slice(0,7)===new Date().toISOString().slice(0,7)).reduce((a,x)=>a+Number(x.amount||0),0)}
+ save();txForm.reset();txDlg.close();render();
+});
+holdForm.addEventListener("submit",e=>{
+ e.preventDefault();const i=Number(holdIndex.value),h={name:holdName.value.trim().toUpperCase(),shares:Number(holdShares.value||0),annual:Number(holdAnnual.value||0),monthly:Number(holdMonthly.value||0),active:holdActive.value==="true"};
+ if(i<0)holdings.push(h);else holdings[i]=h;save();holdDlg.close();render();
+});
+function exportData(){const data={version:2,exportedAt:new Date().toISOString(),holdings,transactions:tx,cash,target};const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="dividend-tracker-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importData(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.holdings)||!Array.isArray(d.transactions))throw Error();holdings=d.holdings;tx=d.transactions;cash=Number(d.cash||0);target=Number(d.target||200);save();render();alert("Backup imported successfully.")}catch(e){alert("That file is not a valid Dividend Tracker backup.")}};r.readAsText(file);input.value=""}
+function resetData(){if(confirm("Reset all local tracker data on this device?")){localStorage.removeItem("dt_holdings");localStorage.removeItem("dt_tx");localStorage.removeItem("dt_cash");localStorage.removeItem("dt_target");localStorage.removeItem("dt_tab");location.reload()}}
+render();if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js").catch(()=>{});
+</script>
+</body></html>
